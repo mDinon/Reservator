@@ -1,2 +1,2 @@
-# Reservator-project
+# Reservator
 Master's thesis project
