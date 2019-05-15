@@ -1,6 +1,7 @@
 ﻿using Reservator.DAL.Repositories.Interfaces;
 using Reservator.Model;
 using System;
+using System.Threading.Tasks;
 
 namespace Reservator.DAL.Repositories
 {
@@ -17,6 +18,11 @@ namespace Reservator.DAL.Repositories
 		public void Commit()
 		{
 			context.SaveChanges();
+		}
+
+		public async Task<int> CommitAsync()
+		{
+			return await context.SaveChangesAsync();
 		}
 
 		private bool disposed = false;

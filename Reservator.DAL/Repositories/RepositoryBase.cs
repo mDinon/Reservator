@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Reservator.DAL.Repositories
 {
@@ -42,9 +43,38 @@ namespace Reservator.DAL.Repositories
 			return query.ToList();
 		}
 
+		public virtual async Task<IEnumerable<TEntity>> GetAsync(
+			Expression<Func<TEntity, bool>> filter = null,
+			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+			string includeProperties = "")
+		{
+			IQueryable<TEntity> query = dbSet;
+
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
+
+			foreach (string includeProperty in includeProperties.Split
+				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				query = query.Include(includeProperty);
+			}
+
+			if (orderBy != null)
+				query = orderBy(query);
+
+			return await query.ToListAsync();
+		}
+
 		public virtual TEntity GetByID(object id)
 		{
 			return dbSet.Find(id);
+		}
+
+		public virtual async Task<TEntity> GetByIDAsync(object id)
+		{
+			return await dbSet.FindAsync(id);
 		}
 
 		public virtual void Insert(TEntity entity)
