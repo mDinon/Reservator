@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reservator.DAL\Reservator.DAL.csproj" />
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <ProjectReference Include="..\Reservator.DAL\Reservator.DAL.csproj" />
   </ItemGroup>
 
 </Project>

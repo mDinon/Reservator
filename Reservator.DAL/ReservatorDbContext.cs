@@ -21,8 +21,10 @@ namespace Reservator.DAL
 			modelBuilder.HasDefaultSchema("Reservator");
 
 			modelBuilder.ApplyConfiguration(new ObjectOwnerConfiguration());
-			modelBuilder.ApplyConfiguration(new ReservationConfiguration());
 			modelBuilder.ApplyConfiguration(new ReservationObjectConfiguration());
+			modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+			modelBuilder.ApplyConfiguration(new UserConfiguration());
+			modelBuilder.ApplyConfiguration(new RoleConfiguration());
 		}
 	}
 }

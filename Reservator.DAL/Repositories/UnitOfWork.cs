@@ -8,12 +8,11 @@ namespace Reservator.DAL.Repositories
 	public class UnitOfWork : IUnitOfWork, IDisposable
 	{
 		private readonly ReservatorDbContext context;
-		public IRepositoryBase<EntityBase> RepositoryBase { get; }
+		public IRepositoryBase<ObjectOwner> ObjectOwnerRepository => new RepositoryBase<ObjectOwner>(context);
 
-		public UnitOfWork(ReservatorDbContext context, IRepositoryBase<EntityBase> repositoryBase)
+		public UnitOfWork(ReservatorDbContext context)
 		{
 			this.context = context;
-			RepositoryBase = repositoryBase;
 		}
 		public void Commit()
 		{
