@@ -39,8 +39,14 @@ namespace Reservator.DAL.Repositories
 
 			if (orderBy != null)
 				query = orderBy(query);
-
-			return query.ToList();
+			try
+			{
+				return query.ToList();
+			}
+			catch(Exception ex)
+			{
+				return query;
+			}
 		}
 
 		public virtual async Task<IEnumerable<TEntity>> GetAsync(

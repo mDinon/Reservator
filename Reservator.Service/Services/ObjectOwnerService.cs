@@ -24,7 +24,7 @@ namespace Reservator.Service.Services
 			//foreach (ObjectOwner owner in objectOwners)
 			//{
 			//	objectOwnerDtos.Add(new ObjectOwnerDto().MapFromEntity(owner));
-				
+
 			//}
 
 			return objectOwners.Select(x => new ObjectOwnerDto().MapFromEntity(x));

@@ -74,9 +74,12 @@ namespace Reservator.API
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reservator API V1");
+				c.DefaultModelsExpandDepth(-1);
 			});
 
-			
+			app.Run(async context => {
+				context.Response.Redirect("/swagger/");
+			});
 		}
 	}
 }
