@@ -23,6 +23,8 @@ namespace Reservator.DAL.Repositories.Interfaces
 			string includeProperties = "");
 		TEntity GetByID(object id);
 		Task<TEntity> GetByIDAsync(object id);
+		TEntity Find(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "");
+		Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "");
 		void Insert(TEntity entity);
 		void Delete(object id);
 		void Update(TEntity entityToUpdate);

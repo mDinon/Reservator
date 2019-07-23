@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservator.DAL;
 
 namespace Reservator.DAL.Migrations
 {
     [DbContext(typeof(ReservatorDbContext))]
-    partial class ReservatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190619074122_Auth")]
+    partial class Auth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 1,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 784, DateTimeKind.Local).AddTicks(5429),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 947, DateTimeKind.Local).AddTicks(212),
                             Description = "Desc1",
                             Name = "Owner1"
                         },
@@ -61,7 +63,7 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 2,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 784, DateTimeKind.Local).AddTicks(7278),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 947, DateTimeKind.Local).AddTicks(1405),
                             Description = "Desc2",
                             Name = "Owner2"
                         });
@@ -110,9 +112,9 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 1,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 794, DateTimeKind.Local).AddTicks(3793),
-                            DateFrom = new DateTime(2019, 6, 19, 12, 41, 38, 794, DateTimeKind.Local).AddTicks(3879),
-                            DateTo = new DateTime(2019, 6, 19, 12, 41, 38, 794, DateTimeKind.Local).AddTicks(7210),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 954, DateTimeKind.Local).AddTicks(7525),
+                            DateFrom = new DateTime(2019, 6, 19, 9, 41, 20, 954, DateTimeKind.Local).AddTicks(7568),
+                            DateTo = new DateTime(2019, 6, 19, 9, 41, 20, 954, DateTimeKind.Local).AddTicks(8789),
                             ReservationObjectID = 1,
                             UserID = 1
                         });
@@ -159,7 +161,7 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 1,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 790, DateTimeKind.Local).AddTicks(8635),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 952, DateTimeKind.Local).AddTicks(4054),
                             Description = "Reservation object A",
                             MaximumReservationTime = 864000000000L,
                             Name = "Reservation object A",
@@ -200,7 +202,7 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 1,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 781, DateTimeKind.Local).AddTicks(1660),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 945, DateTimeKind.Local).AddTicks(5262),
                             Description = "User role",
                             Name = "User"
                         },
@@ -208,7 +210,7 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 2,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 781, DateTimeKind.Local).AddTicks(1968),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 945, DateTimeKind.Local).AddTicks(5337),
                             Description = "Admin role",
                             Name = "Admin"
                         });
@@ -249,8 +251,6 @@ namespace Reservator.DAL.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<string>("Salt");
-
                     b.Property<string>("Token");
 
                     b.Property<string>("Username")
@@ -266,19 +266,18 @@ namespace Reservator.DAL.Migrations
                         {
                             ID = 1,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 767, DateTimeKind.Local).AddTicks(3001),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 934, DateTimeKind.Local).AddTicks(4535),
                             Email = "test.test@test.test",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "hmA9I2JMwm16IdQQ3JhJTzsv8jwyX/JF5zgtsaJjtq8=",
-                            Salt = "TMhkVlX+WrYRHsnsQKn6ig==",
+                            Password = "testuser",
                             Username = "tUser"
                         },
                         new
                         {
                             ID = 2,
                             Active = true,
-                            DateCreated = new DateTime(2019, 6, 19, 12, 41, 38, 776, DateTimeKind.Local).AddTicks(1677),
+                            DateCreated = new DateTime(2019, 6, 19, 9, 41, 20, 942, DateTimeKind.Local).AddTicks(3235),
                             Email = "admin@admin.admin",
                             FirstName = "Admin",
                             LastName = "User",

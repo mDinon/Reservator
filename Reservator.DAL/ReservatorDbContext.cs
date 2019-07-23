@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Reservator.DAL.ModelConfiguration;
 using Reservator.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Reservator.DAL
 {
@@ -20,11 +21,22 @@ namespace Reservator.DAL
 		{
 			modelBuilder.HasDefaultSchema("Reservator");
 
+			modelBuilder.ApplyConfiguration(new UserConfiguration());
+			modelBuilder.ApplyConfiguration(new RoleConfiguration());
 			modelBuilder.ApplyConfiguration(new ObjectOwnerConfiguration());
 			modelBuilder.ApplyConfiguration(new ReservationObjectConfiguration());
 			modelBuilder.ApplyConfiguration(new ReservationConfiguration());
-			modelBuilder.ApplyConfiguration(new UserConfiguration());
-			modelBuilder.ApplyConfiguration(new RoleConfiguration());
+
+			modelBuilder.Entity<UserRole>().HasKey(o => new { o.UserID, o.RoleID });
+			modelBuilder.Entity<UserRole>().HasData(
+				new UserRole() {
+				UserID = 1,
+				RoleID = 1,
+			}, new UserRole()
+			{
+				UserID = 2,
+				RoleID = 2,
+			});
 		}
 	}
 }

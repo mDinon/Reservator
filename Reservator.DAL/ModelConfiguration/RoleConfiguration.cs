@@ -17,6 +17,13 @@ namespace Reservator.DAL.ModelConfiguration
 				Description = "User role",
 				DateCreated = DateTime.Now,
 				Active = true
+			}, new Role()
+			{
+				Name = "Admin",
+				ID = 2,
+				Description = "Admin role",
+				DateCreated = DateTime.Now,
+				Active = true
 			});
 		}
 	}

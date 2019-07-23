@@ -9,6 +9,7 @@ namespace Reservator.DAL.Repositories
 	{
 		private readonly ReservatorDbContext context;
 		public IRepositoryBase<ObjectOwner> ObjectOwnerRepository => new RepositoryBase<ObjectOwner>(context);
+		public IRepositoryBase<User> UserRepository => new RepositoryBase<User>(context);
 
 		public UnitOfWork(ReservatorDbContext context)
 		{

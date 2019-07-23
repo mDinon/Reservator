@@ -39,14 +39,8 @@ namespace Reservator.DAL.Repositories
 
 			if (orderBy != null)
 				query = orderBy(query);
-			try
-			{
-				return query.ToList();
-			}
-			catch(Exception ex)
-			{
-				return query;
-			}
+
+			return query.ToList();
 		}
 
 		public virtual async Task<IEnumerable<TEntity>> GetAsync(
@@ -83,6 +77,42 @@ namespace Reservator.DAL.Repositories
 			return await dbSet.FindAsync(id);
 		}
 
+		public virtual TEntity Find(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+		{
+			IQueryable<TEntity> query = dbSet;
+
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
+
+			foreach (string includeProperty in includeProperties.Split
+				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				query = query.Include(includeProperty);
+			}
+
+			return query.FirstOrDefault();
+		}
+
+		public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+		{
+			IQueryable<TEntity> query = dbSet;
+
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
+
+			foreach (string includeProperty in includeProperties.Split
+				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				query = query.Include(includeProperty);
+			}
+
+			return await query.FirstOrDefaultAsync();
+		}
+
 		public virtual void Insert(TEntity entity)
 		{
 			dbSet.Add(entity);
@@ -94,15 +124,6 @@ namespace Reservator.DAL.Repositories
 			entityToDelete.Active = false;
 			Update(entityToDelete);
 		}
-
-		//public virtual void Delete(TEntity entityToDelete)
-		//{
-		//	if (context.Entry(entityToDelete).State == EntityState.Detached)
-		//	{
-		//		dbSet.Attach(entityToDelete);
-		//	}
-		//	dbSet.Remove(entityToDelete);
-		//}
 
 		public virtual void Update(TEntity entityToUpdate)
 		{
