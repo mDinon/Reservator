@@ -74,6 +74,8 @@ namespace Reservator.API
 
 			services.AddTransient<IUnitOfWork, UnitOfWork>();
 			services.AddTransient<IObjectOwnerService, ObjectOwnerService>();
+			services.AddTransient<IReservationService, ReservationService>();
+			services.AddTransient<IReservationObjectService, ReservationObjectService>();
 			services.AddScoped<IUserService, UserService>();
 
 

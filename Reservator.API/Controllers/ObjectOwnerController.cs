@@ -21,7 +21,7 @@ namespace Reservator.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetObjectOwners()
 		{
-			return Ok(await objectOwnerService.GetObjectOwnersAync());
+			return Ok(await objectOwnerService.GetObjectOwnersAsync());
 		}
 
 		// GET: api/ObjectOwner/5

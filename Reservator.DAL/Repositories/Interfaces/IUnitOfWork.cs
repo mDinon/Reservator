@@ -7,7 +7,6 @@ namespace Reservator.DAL.Repositories.Interfaces
 	{
 		void Commit();
 		Task<int> CommitAsync();
-		IRepositoryBase<ObjectOwner> ObjectOwnerRepository { get; }
-		IRepositoryBase<User> UserRepository { get; }
+		IRepositoryBase<TEntity> Repository<TEntity>() where TEntity : EntityBase;
 	}
 }

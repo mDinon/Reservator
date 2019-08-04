@@ -6,7 +6,7 @@ namespace Reservator.Service.Services.Interfaces
 {
 	public interface IObjectOwnerService
 	{
-		Task<IEnumerable<ObjectOwnerDto>> GetObjectOwnersAync();
+		Task<IEnumerable<ObjectOwnerDto>> GetObjectOwnersAsync();
 		Task<ObjectOwnerDto> GetAsync(int id);
 		Task<int> Delete(int id);
 		Task<int> Insert(ObjectOwnerDto dto);

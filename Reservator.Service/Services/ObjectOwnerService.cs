@@ -14,47 +14,37 @@ namespace Reservator.Service.Services
 		{
 		}
 
-		public async Task<IEnumerable<ObjectOwnerDto>> GetObjectOwnersAync()
+		public async Task<IEnumerable<ObjectOwnerDto>> GetObjectOwnersAsync()
 		{
-			//List<ObjectOwnerDto> objectOwnerDtos = new List<ObjectOwnerDto>();
-			IEnumerable<ObjectOwner> objectOwners = await UnitOfWork.ObjectOwnerRepository.GetAsync(orderBy: q => q.OrderBy(x => x.ID));
-
-			//objectOwnerDtos.AddRange(objectOwners.Select(x => new ObjectOwnerDto().MapFromEntity(x)));
-
-			//foreach (ObjectOwner owner in objectOwners)
-			//{
-			//	objectOwnerDtos.Add(new ObjectOwnerDto().MapFromEntity(owner));
-
-			//}
+			IEnumerable<ObjectOwner> objectOwners = await UnitOfWork.Repository<ObjectOwner>().GetAsync(orderBy: q => q.OrderBy(x => x.ID));
 
 			return objectOwners.Select(x => new ObjectOwnerDto().MapFromEntity(x));
-			//return objectOwnerDtos;
 		}
 
 		public async Task<ObjectOwnerDto> GetAsync(int id)
 		{
-			ObjectOwner owner = await UnitOfWork.ObjectOwnerRepository.GetByIDAsync(id);
+			ObjectOwner owner = await UnitOfWork.Repository<ObjectOwner>().GetByIDAsync(id);
 
 			return new ObjectOwnerDto().MapFromEntity(owner);
 		}
 
 		public async Task<int> Delete(int id)
 		{
-			UnitOfWork.ObjectOwnerRepository.Delete(id);
+			UnitOfWork.Repository<ObjectOwner>().Delete(id);
 			return await UnitOfWork.CommitAsync();
 		}
 
 		public async Task<int> Insert(ObjectOwnerDto dto)
 		{
 
-			UnitOfWork.ObjectOwnerRepository.Insert(dto.MapToEntity(new ObjectOwner()));
+			UnitOfWork.Repository<ObjectOwner>().Insert(dto.MapToEntity(new ObjectOwner()));
 			return await UnitOfWork.CommitAsync();
 		}
 
 		public async Task<int> Update(int id, ObjectOwnerDto dto)
 		{
-			ObjectOwner owner = await UnitOfWork.ObjectOwnerRepository.GetByIDAsync(id);
-			UnitOfWork.ObjectOwnerRepository.Update(dto.MapToEntity(owner));
+			ObjectOwner owner = await UnitOfWork.Repository<ObjectOwner>().GetByIDAsync(id);
+			UnitOfWork.Repository<ObjectOwner>().Update(dto.MapToEntity(owner));
 			return await UnitOfWork.CommitAsync();
 		}
 	}

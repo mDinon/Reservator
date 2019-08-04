@@ -7,7 +7,6 @@ using Reservator.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Reservator.Service.Services
@@ -27,7 +26,7 @@ namespace Reservator.Service.Services
 				throw new ArgumentException("Username or password not provided!");
 			}
 
-			IEnumerable<User> users = await UnitOfWork.UserRepository.GetAsync(x => x.Username == username || x.Email == username, includeProperties:"Roles,Roles.Role");
+			IEnumerable<User> users = await UnitOfWork.Repository<User>().GetAsync(x => x.Username == username || x.Email == username, includeProperties:"Roles,Roles.Role");
 
 			User user = users.FirstOrDefault(x => Hash.Validate(password, x.Salt, x.Password));
 
@@ -49,7 +48,7 @@ namespace Reservator.Service.Services
 			user.Password = password.Hash;
 			user.Salt = password.Salt;
 
-			UnitOfWork.UserRepository.Insert(user);
+			UnitOfWork.Repository<User>().Insert(user);
 			UnitOfWork.Commit();
 
 			return await Authenticate(userDto.Username, userDto.Password);

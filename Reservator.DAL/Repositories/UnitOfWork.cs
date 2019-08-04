@@ -1,6 +1,7 @@
 ﻿using Reservator.DAL.Repositories.Interfaces;
 using Reservator.Model;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Reservator.DAL.Repositories
@@ -8,8 +9,7 @@ namespace Reservator.DAL.Repositories
 	public class UnitOfWork : IUnitOfWork, IDisposable
 	{
 		private readonly ReservatorDbContext context;
-		public IRepositoryBase<ObjectOwner> ObjectOwnerRepository => new RepositoryBase<ObjectOwner>(context);
-		public IRepositoryBase<User> UserRepository => new RepositoryBase<User>(context);
+		private Dictionary<string, object> repositories;
 
 		public UnitOfWork(ReservatorDbContext context)
 		{
@@ -44,6 +44,24 @@ namespace Reservator.DAL.Repositories
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+
+		public IRepositoryBase<TEntity> Repository<TEntity>() where TEntity : EntityBase
+		{
+			if (repositories == null)
+			{
+				repositories = new Dictionary<string, object>();
+			}
+
+			string type = typeof(TEntity).Name;
+
+			if (!repositories.ContainsKey(type))
+			{
+				Type repositoryType = typeof(RepositoryBase<>);
+				object repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), context);
+				repositories.Add(type, repositoryInstance);
+			}
+			return (IRepositoryBase<TEntity>)repositories[type];
 		}
 	}
 }

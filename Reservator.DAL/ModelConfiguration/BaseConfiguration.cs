@@ -8,7 +8,7 @@ namespace Reservator.DAL.ModelConfiguration
 	{
 		public virtual void Configure(EntityTypeBuilder<TEntiy> builder)
 		{
-			//builder.HasQueryFilter(x => x.Active.GetValueOrDefault());
+			builder.HasQueryFilter(x => x.Active == true);
 			builder.Property(x => x.Active).HasDefaultValueSql("1").ValueGeneratedOnAdd();
 			builder.Property(x => x.DateCreated).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
 			builder.Property(x => x.DateModified).HasDefaultValueSql("GETDATE()").ValueGeneratedOnUpdate();
