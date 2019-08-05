@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ReservationObjectsTable = props => {
   if (props.reservationObjects.length === 0)
@@ -19,7 +20,11 @@ const ReservationObjectsTable = props => {
         {props.reservationObjects.map(reservationObject => (
           <tr key={reservationObject.id}>
             <td>{reservationObject.id}</td>
-            <td>{reservationObject.name}</td>
+            <td>
+              <Link to={`/items/edit/${reservationObject.id}`}>
+                {reservationObject.name}
+              </Link>
+            </td>
             <td>{reservationObject.description}</td>
             <td>{reservationObject.maximumReservationTime}</td>
             <td>

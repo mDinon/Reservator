@@ -28,7 +28,14 @@ namespace Reservator.API.Controllers
 		[HttpGet("{id}", Name = "Get")]
 		public async Task<IActionResult> Get(int id)
 		{
-			return Ok(await objectOwnerService.GetAsync(id));
+			ObjectOwnerDto objectOwner = await objectOwnerService.GetAsync(id);
+
+			if(objectOwner == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(objectOwner);
 		}
 
 		// POST: api/ObjectOwner
@@ -36,10 +43,14 @@ namespace Reservator.API.Controllers
 		public async Task<IActionResult> Post([FromBody] ObjectOwnerDto owner)
 		{
 			if (owner == null)
+			{
 				return BadRequest();
+			}
 
 			if (!ModelState.IsValid)
+			{
 				return BadRequest(ModelState);
+			}
 
 			await objectOwnerService.Insert(owner);
 			return Ok();
@@ -50,10 +61,14 @@ namespace Reservator.API.Controllers
 		public async Task<IActionResult> Put(int id, [FromBody] ObjectOwnerDto owner)
 		{
 			if (owner == null || owner.ID != id)
+			{
 				return BadRequest();
+			}
 
 			if (!ModelState.IsValid)
+			{
 				return BadRequest(ModelState);
+			}
 
 			await objectOwnerService.Update(id, owner);
 			return NoContent();

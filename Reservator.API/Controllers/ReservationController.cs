@@ -30,7 +30,13 @@ namespace Reservator.API.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
 		{
-			return Ok(await reservationService.GetAsync(id));
+			ReservationDto reservation = await reservationService.GetAsync(id);
+			if(reservation == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(reservation);
 		}
 
 		// POST: api/Reservation
@@ -38,10 +44,14 @@ namespace Reservator.API.Controllers
 		public async Task<IActionResult> Post([FromBody] ReservationDto reservation)
 		{
 			if (reservation == null)
+			{
 				return BadRequest();
+			}
 
 			if (!ModelState.IsValid)
+			{
 				return BadRequest(ModelState);
+			}
 
 			await reservationService.Insert(reservation);
 			return Ok();
@@ -52,10 +62,14 @@ namespace Reservator.API.Controllers
 		public async Task<IActionResult> Put(int id, [FromBody] ReservationDto reservation)
 		{
 			if (reservation == null || reservation.ID != id)
+			{
 				return BadRequest();
+			}
 
 			if (!ModelState.IsValid)
+			{
 				return BadRequest(ModelState);
+			}
 
 			await reservationService.Update(id, reservation);
 			return NoContent();

@@ -121,8 +121,11 @@ namespace Reservator.DAL.Repositories
 		public virtual void Delete(object id)
 		{
 			TEntity entityToDelete = dbSet.Find(id);
-			entityToDelete.Active = false;
-			Update(entityToDelete);
+			if (entityToDelete != null)
+			{
+				entityToDelete.Active = false;
+				Update(entityToDelete);
+			}
 		}
 
 		public virtual void Update(TEntity entityToUpdate)

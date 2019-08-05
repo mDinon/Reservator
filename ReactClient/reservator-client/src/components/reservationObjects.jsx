@@ -1,6 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
 import ReservationObjectsTable from "./reservationObjectsTable";
+import { toast } from "react-toastify";
+import {
+  getReservationObjects,
+  deleteReservationObject
+} from "../services/reservationObjectService";
 
 class ReservationObjects extends Component {
   state = {
@@ -8,20 +12,25 @@ class ReservationObjects extends Component {
   };
 
   async componentDidMount() {
-    const { data: result } = await axios.get(
-      "https://localhost:44381/api/ReservationObject"
-    );
-    this.setState({ reservationObjects: result });
+    const { data: reservationObjects } = await getReservationObjects();
+    this.setState({ reservationObjects });
   }
 
   handleDelete = async reservationObject => {
-    const result = this.state.reservationObjects.filter(
+    const originalReservationObjects = this.state.reservationObjects;
+
+    const reservationObjects = originalReservationObjects.filter(
       r => r.id !== reservationObject.id
     );
-    await axios.delete(
-      "https://localhost:44381/api/ReservationObject/" + reservationObject.id
-    );
-    this.setState({ reservationObjects: result });
+    this.setState({ reservationObjects });
+
+    try {
+      await deleteReservationObject(reservationObject.id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error("Item has already been deleted!");
+      this.setState({ reservationObjects: originalReservationObjects });
+    }
   };
 
   handleAddingNew = () => {

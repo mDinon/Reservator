@@ -25,7 +25,7 @@ namespace Reservator.Service.Services
 		{
 			ReservationObject reservation = await UnitOfWork.Repository<ReservationObject>().GetByIDAsync(id);
 
-			return new ReservationObjectDto().MapFromEntity(reservation);
+			return reservation == null ? null : new ReservationObjectDto().MapFromEntity(reservation);
 		}
 
 		public async Task<int> Delete(int id)
