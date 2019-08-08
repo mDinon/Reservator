@@ -6,12 +6,15 @@ import {
 } from "../services/reservationService";
 import Pagination from "./common/pagination";
 import { paginate } from "./../services/utils/paginate";
+import ReservationsTable from "./reservationsTable";
+import _ from "lodash";
 
 class Reservations extends Component {
   state = {
     reservations: [],
     currentPage: 1,
-    pageSize: 4
+    pageSize: 4,
+    sortColumn: { path: "id", order: "asc" }
   };
 
   async componentDidMount() {
@@ -36,6 +39,10 @@ class Reservations extends Component {
     }
   };
 
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
@@ -44,10 +51,29 @@ class Reservations extends Component {
     this.props.history.push("/reservations/add");
   };
 
+  getPagedData = () => {
+    const {
+      currentPage,
+      pageSize,
+      sortColumn,
+      reservations: allReservations
+    } = this.state;
+
+    const sorted = _.orderBy(
+      allReservations,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+
+    return paginate(sorted, currentPage, pageSize);
+  };
+
   render() {
     const { length: count } = this.state.reservations;
-    const { currentPage, pageSize, reservations: allReservations } = this.state;
-    const reservations = paginate(allReservations, currentPage, pageSize);
+    const { currentPage, pageSize, sortColumn } = this.state;
+
+    const reservations = this.getPagedData();
+
     return (
       <React.Fragment>
         <h1 style={{ marginBottom: 50 }}>My reservations</h1>
@@ -56,39 +82,15 @@ class Reservations extends Component {
           style={{ marginBottom: 20 }}
           onClick={this.handleAddingNew}
         >
+          <i className="fa fa-plus m-1" />
           Add new
         </button>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Item</th>
-              <th>Item description</th>
-              <th>Date from</th>
-              <th>Date to</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {reservations.map(reservation => (
-              <tr key={reservation.id}>
-                <td>{reservation.id}</td>
-                <td>{reservation.reservationObjectName}</td>
-                <td>{reservation.reservationObjectDescription}</td>
-                <td>{reservation.dateFrom}</td>
-                <td>{reservation.dateTo}</td>
-                <td>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => this.handleDelete(reservation)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ReservationsTable
+          reservations={reservations}
+          sortColumn={sortColumn}
+          onDelete={this.handleDelete}
+          onSort={this.handleSort}
+        />
         <Pagination
           itemsCount={count}
           pageSize={pageSize}
