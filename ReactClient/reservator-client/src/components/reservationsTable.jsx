@@ -1,13 +1,26 @@
 import React, { Component } from "react";
 import Table from "./common/table";
+import Moment from "react-moment";
 
 class ReservationsTable extends Component {
   columns = [
-    { path: "id", label: "Id" },
+    //{ path: "id", label: "Id" },
     { path: "reservationObjectName", label: "Item" },
-    { path: "reservationObjectDescription", label: "Item Description" },
-    { path: "dateFrom", label: "Date from" },
-    { path: "dateTo", label: "Date to" },
+    { path: "reservationObjectDescription", label: "Item escription" },
+    {
+      path: "dateFrom",
+      label: "Date from",
+      content: reservation => (
+        <Moment format="DD.MM.YYYY. hh:mm">{reservation.dateFrom}</Moment>
+      )
+    },
+    {
+      path: "dateTo",
+      label: "Date to",
+      content: reservation => (
+        <Moment format="DD.MM.YYYY. hh:mm">{reservation.dateTo}</Moment>
+      )
+    },
     {
       key: "delete",
       content: reservation => (

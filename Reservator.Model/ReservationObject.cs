@@ -7,7 +7,7 @@ namespace Reservator.Model
 	public class ReservationObject : EntityBase
 	{
 		public string Name { get; set; }
-		public Int64? MaximumReservationTime { get; set; }
+		public long? MaximumReservationTime { get; set; }
 		[ForeignKey("ObjectOwner")]
 		public int? ObjectOwnerID { get; set; }
 		public string Description { get; set; }

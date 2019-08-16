@@ -19,7 +19,7 @@ namespace Reservator.DAL.ModelConfiguration
 					DateCreated = DateTime.Now,
 					Description = "Reservation object A",
 					ID = 1,
-					MaximumReservationTime = TimeSpan.TicksPerDay,
+					MaximumReservationTime = 10800,
 					Name = "Reservation object A",
 					ObjectOwnerID = 1
 				});

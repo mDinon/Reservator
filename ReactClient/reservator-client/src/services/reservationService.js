@@ -3,16 +3,26 @@ import { apiUrl } from "../config.json";
 
 const apiEndpoint = apiUrl + "/reservation";
 
+function reservationUrl(id) {
+  return `${apiEndpoint}/${id}`;
+}
+
 export function getReservations() {
   return http.get(apiEndpoint);
 }
 
 export function getReservation(id) {
-  return http.get(`${apiEndpoint}/${id}`);
+  return http.get(reservationUrl(id));
 }
 
-export function saveResevation(reservation) {}
+export function saveReservation(reservation) {
+  if (reservation.id && reservation.id !== undefined) {
+    return http.put(reservationUrl(reservation.id), reservation);
+  }
+
+  return http.post(apiEndpoint, reservation);
+}
 
 export function deleteReservation(id) {
-  return http.delete(`${apiEndpoint}/${id}`);
+  return http.delete(reservationUrl(id));
 }

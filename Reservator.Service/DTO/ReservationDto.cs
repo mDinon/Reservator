@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Reservator.Model;
-using Reservator.Service.DTO;
 using System;
 
 namespace Reservator.Service.Dto
@@ -12,10 +11,10 @@ namespace Reservator.Service.Dto
 		public DateTime? DateFrom { get; set; }
 		public DateTime? DateTo { get; set; }
 		public int? ReservationObjectID { get; set; }
-		public int? UserID { get; set; }
+		public int? UserID { get; set; } = 1;
 		public string ReservationObjectName { get; set; }
 		public string ReservationObjectDescription { get; set; }
-		public Int64? ReservationObjectMaximumReservationTime { get; set; }
+		public long? ReservationObjectMaximumReservationTime { get; set; }
 		public string ReservationObjectObjectOwnerName { get; set; }
 
 		public Reservation MapToEntity(Reservation reservation)
@@ -26,8 +25,6 @@ namespace Reservator.Service.Dto
 			}
 
 			Reservation reservationEntity = reservation;
-			reservationEntity.ID = ID;
-			reservationEntity.Active = Active;
 			reservationEntity.DateFrom = DateFrom;
 			reservationEntity.DateTo = DateTo;
 			reservationEntity.ReservationObjectID = ReservationObjectID;

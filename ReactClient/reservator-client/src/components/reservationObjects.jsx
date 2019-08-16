@@ -5,10 +5,16 @@ import {
   getReservationObjects,
   deleteReservationObject
 } from "../services/reservationObjectService";
+import Pagination from "./common/pagination";
+import { paginate } from "./../services/utils/paginate";
+import _ from "lodash";
 
 class ReservationObjects extends Component {
   state = {
-    reservationObjects: []
+    reservationObjects: [],
+    currentPage: 1,
+    pageSize: 4,
+    sortColumn: { path: "id", order: "asc" }
   };
 
   async componentDidMount() {
@@ -37,7 +43,37 @@ class ReservationObjects extends Component {
     this.props.history.push("/items/add");
   };
 
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
+  };
+
+  getPagedData = () => {
+    const {
+      currentPage,
+      pageSize,
+      sortColumn,
+      reservationObjects: allReservationObjects
+    } = this.state;
+
+    const sorted = _.orderBy(
+      allReservationObjects,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+
+    return paginate(sorted, currentPage, pageSize);
+  };
+
   render() {
+    const { length: count } = this.state.reservationObjects;
+    const { currentPage, pageSize, sortColumn } = this.state;
+
+    const reservationObjects = this.getPagedData();
+
     return (
       <React.Fragment>
         <h1 style={{ marginBottom: 50 }}>Items</h1>
@@ -46,11 +82,20 @@ class ReservationObjects extends Component {
           style={{ marginBottom: 20 }}
           onClick={this.handleAddingNew}
         >
+          <i className="fa fa-plus m-1" />
           Add new
         </button>
         <ReservationObjectsTable
-          handleDelete={this.handleDelete}
-          reservationObjects={this.state.reservationObjects}
+          reservationObjects={reservationObjects}
+          sortColumn={sortColumn}
+          onDelete={this.handleDelete}
+          onSort={this.handleSort}
+        />
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
         />
       </React.Fragment>
     );

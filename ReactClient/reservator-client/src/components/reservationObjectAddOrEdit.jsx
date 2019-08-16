@@ -1,7 +1,10 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getReservationObject } from "../services/reservationObjectService";
+import {
+  getReservationObject,
+  saveReservationObject
+} from "../services/reservationObjectService";
 
 class ReservationObjectAddOrEdit extends Form {
   state = {
@@ -23,27 +26,37 @@ class ReservationObjectAddOrEdit extends Form {
       .label("Maximum reservation duration (days)")
   };
 
-  doSubmit = () => {};
+  doSubmit = async () => {
+    await saveReservationObject(this.state.data);
+
+    this.props.history.push("/items");
+  };
+
+  async populateReservationObject() {
+    try {
+      const reservationObjectId = this.props.match.params.id;
+      if (reservationObjectId === undefined) return;
+
+      const { data: reservationObject } = await getReservationObject(
+        reservationObjectId
+      );
+      this.setState({ data: this.mapToViewModel(reservationObject) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
+  }
 
   async componentDidMount() {
-    const reservationObjectId = this.props.match.params.id;
-    console.log({ reservationObjectId });
-
-    if (reservationObjectId === "add") return;
-
-    const { data: reservationObject } = await getReservationObject(
-      reservationObjectId
-    );
-    if (!reservationObject) return this.props.history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(reservationObject) });
+    await this.populateReservationObject();
   }
 
   mapToViewModel(reservationObject) {
     return {
       id: reservationObject.id,
       name: reservationObject.name,
-      description: reservationObject.description
+      description: reservationObject.description,
+      maximumReservationTime: reservationObject.maximumReservationTime
     };
   }
 

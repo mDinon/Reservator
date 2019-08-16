@@ -10,8 +10,8 @@ namespace Reservator.Service.DTO
 		public bool? Active { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
-		public Int64? MaximumReservationTime { get; set; }
-		public int? ObjectOwnerID { get; set; }
+		public long? MaximumReservationTime { get; set; }
+		public int? ObjectOwnerID { get; set; } = 1;
 		public string ObjectOwnerName { get; set; }
 		public string ObjectOwnerDescription { get; set; }
 
@@ -23,11 +23,9 @@ namespace Reservator.Service.DTO
 			}
 
 			ReservationObject reservationObjectEntity = reservationObject;
-			reservationObjectEntity.ID = ID;
-			reservationObjectEntity.Active = Active;
 			reservationObjectEntity.Name = Name;
 			reservationObjectEntity.Description = Description;
-			reservationObjectEntity.MaximumReservationTime = MaximumReservationTime;
+			reservationObjectEntity.MaximumReservationTime = ConvertFromDaysToMinutes(MaximumReservationTime.GetValueOrDefault());
 			reservationObjectEntity.ObjectOwnerID = ObjectOwnerID;
 
 			return reservationObjectEntity;
@@ -38,16 +36,32 @@ namespace Reservator.Service.DTO
 			if (reservationObject != null)
 			{
 				ID = reservationObject.ID;
-				Active = reservationObject.Active;
+				//Active = reservationObject.Active;
 				Name = reservationObject.Name;
 				Description = reservationObject.Description;
-				MaximumReservationTime = reservationObject.MaximumReservationTime;
+				MaximumReservationTime = ConvertFromMinutesToDays(reservationObject.MaximumReservationTime.GetValueOrDefault());
 				ObjectOwnerID = reservationObject.ObjectOwnerID;
 				ObjectOwnerName = reservationObject.ObjectOwner?.Name;
 				ObjectOwnerDescription = reservationObject.ObjectOwner?.Description;
 			}
 
 			return this;
+		}
+
+		private long ConvertFromMinutesToDays(long minutes)
+		{
+			long hours = minutes / 60;
+			long days = hours / 24;
+
+			return days;
+		}
+
+		private long ConvertFromDaysToMinutes(long days)
+		{
+			long hours = days * 24;
+			long minutes = hours * 60;
+
+			return minutes;
 		}
 	}
 

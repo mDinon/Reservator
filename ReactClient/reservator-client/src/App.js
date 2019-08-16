@@ -25,7 +25,10 @@ class App extends Component {
             <Route path="/reservations/add" component={ReservationAdd} />
             <Route path="/reservations" component={Reservations} />
             <Route path="/items/add" component={ReservationObjectAddOrEdit} />
-            <Route path="/items/edit" component={ReservationObjectAddOrEdit} />
+            <Route
+              path="/items/edit/:id"
+              component={ReservationObjectAddOrEdit}
+            />
             <Route path="/items" component={ReservationObjects} />
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/reservations" />

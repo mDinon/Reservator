@@ -1,16 +1,15 @@
 import React from "react";
 import Joi from "joi-browser";
-import axios from "axios";
 import Form from "./common/form";
 import { getReservationObjects } from "../services/reservationObjectService";
+import { saveReservation } from "../services/reservationService";
 
 class ReservationAdd extends Form {
   state = {
     data: {
       dateFrom: "",
       dateTo: "",
-      reservationObjectId: "",
-      maximumReservationTime: ""
+      reservationObjectId: ""
     },
     reservationObjects: [],
     errors: {}
@@ -29,21 +28,13 @@ class ReservationAdd extends Form {
       .label("Item")
   };
 
-  async componentDidMount() {
+  async populateReservationObjects() {
     const { data: result } = await getReservationObjects();
     this.setState({ reservationObjects: result });
+  }
 
-    // const reservationObjectId = this.props.match.params.id;
-    // console.log({ reservationObjectId });
-
-    // if (reservationObjectId === "add") return;
-
-    // const { data: reservation } = await axios.get(
-    //   `https://localhost:44381/api/Reservation/${reservationObjectId}`
-    // );
-    // if (!reservation) return this.props.history.replace("/not-found");
-
-    //this.setState({ data: this.mapToViewModel(reservation) });
+  async componentDidMount() {
+    await this.populateReservationObjects();
   }
 
   mapToViewModel(reservation) {
@@ -55,13 +46,11 @@ class ReservationAdd extends Form {
     };
   }
 
-  async doSubmit() {
-    await axios.post(
-      "https://localhost:44381/api/Reservation/",
-      this.state.data
-    );
+  doSubmit = async () => {
+    await saveReservation(this.state.data);
+
     this.props.history.push("/reservations");
-  }
+  };
 
   render() {
     return (
