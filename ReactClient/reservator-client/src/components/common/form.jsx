@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
+import DatePickerWrapper from "./datePicker";
 
 class Form extends Component {
   state = {
@@ -49,6 +50,22 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleDatePickerChange = (name, value) => {
+    const input = {
+      name: name.name,
+      value: value
+    };
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+
+    const data = { ...this.state.data };
+    data[input.name] = value;
+
+    this.setState({ data, errors });
+  };
+
   renderButton(label) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">
@@ -83,6 +100,19 @@ class Form extends Component {
         options={options}
         onChange={this.handleChange}
         error={errors[name]}
+      />
+    );
+  }
+
+  renderDatePicker(name, label) {
+    const { data, errors } = this.state;
+    return (
+      <DatePickerWrapper
+        name={name}
+        label={label}
+        error={errors[name]}
+        value={data[name]}
+        onChange={date => this.handleDatePickerChange({ name }, date)}
       />
     );
   }

@@ -55,15 +55,15 @@ class ReservationAdd extends Form {
   render() {
     return (
       <div>
-        <h1>Add new</h1>
+        <h1 style={{ marginBottom: 50 }}>Add new</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderSelect(
             "reservationObjectId",
             "Item",
             this.state.reservationObjects
           )}
-          {this.renderInput("dateFrom", "Date from")}
-          {this.renderInput("dateTo", "Date to")}
+          {this.renderDatePicker("dateFrom", "Date from")}
+          {this.renderDatePicker("dateTo", "Date to")}
           {this.renderButton("Save")}
         </form>
       </div>

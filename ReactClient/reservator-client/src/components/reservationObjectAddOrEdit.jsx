@@ -63,7 +63,7 @@ class ReservationObjectAddOrEdit extends Form {
   render() {
     return (
       <div>
-        <h1>Add new or edit</h1>
+        <h1 style={{ marginBottom: 50 }}>Add new or edit</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
           {this.renderInput("description", "Description")}
