@@ -1,0 +1,26 @@
+﻿<div className="form-group">
+	<label for=@Name>@Label</label>
+	<input id=@Name
+		   name=@Name
+		   className="form-control"
+		   style="max-width:500px"
+		   @attributes="InputAttributes" />
+	@if (!string.IsNullOrWhiteSpace(Error)) {
+	<div id="divError" className="alert alert-danger" visible="false">@Error</div>
+	}
+</div>
+
+
+@code{
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string Name { get; set; }
+
+	[Parameter]
+	public string Error { get; set; }
+
+	[Parameter(CaptureUnmatchedAttributes = true)]
+	public Dictionary<string, object> InputAttributes { get; set; }
+}

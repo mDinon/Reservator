@@ -1,0 +1,19 @@
+﻿@model Column
+<thead>
+	<tr>
+		@foreach (Column column in @Columns)
+		{
+			<th className="clickable"
+				key={column.Path || column.Key}
+				@*onClick={() => this.raiseSort(column.Path)}*@
+				>
+				@column.label
+				@*{column.label} {this.renderSortIcon(column)}*@
+			</th>
+		}
+	</tr>
+</thead>
+
+@code{
+	[Parameter] public List<Column> Columns { get; set; }
+}

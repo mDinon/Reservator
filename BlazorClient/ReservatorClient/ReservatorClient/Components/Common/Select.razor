@@ -1,0 +1,40 @@
+﻿
+<div className="form-group">
+	<label for=@Name>@Label</label>
+	<select id=@Name
+			name=@Name
+			className="form-control"
+			style="max-width:500px"
+			@attributes="InputAttributes">
+		<option value=""></option>
+		@foreach (var option in Options)
+		{
+			<option value={option.Key}>
+				{option.Value}
+			</option>
+		}
+	</select>
+	@if (!string.IsNullOrWhiteSpace(Error))
+	{
+		<div id="divError" className="alert alert-danger" visible="false">@Error</div>
+	}
+</div>
+
+
+@code{
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string Name { get; set; }
+
+	[Parameter]
+	public List<KeyValuePair<string,string>> Options { get; set; }
+
+	[Parameter]
+	public string Error { get; set; }
+
+	[Parameter(CaptureUnmatchedAttributes = true)]
+	public Dictionary<string, object>
+	InputAttributes { get; set; }
+	}
