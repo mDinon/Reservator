@@ -11,14 +11,14 @@ class ReservationsTable extends Component {
       path: "dateFrom",
       label: "Date from",
       content: reservation => (
-        <Moment format="DD.MM.YYYY. hh:mm">{reservation.dateFrom}</Moment>
+        <Moment format="DD.MM.YYYY. HH:mm">{reservation.dateFrom}</Moment>
       )
     },
     {
       path: "dateTo",
       label: "Date to",
       content: reservation => (
-        <Moment format="DD.MM.YYYY. hh:mm">{reservation.dateTo}</Moment>
+        <Moment format="DD.MM.YYYY. HH:mm">{reservation.dateTo}</Moment>
       )
     },
     {

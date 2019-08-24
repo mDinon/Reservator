@@ -17,12 +17,12 @@ const NavBar = () => {
           <NavLink className="nav-item nav-link" to="/items">
             Items
           </NavLink>
-          <NavLink className="nav-item nav-link" to="/login">
+          {/* <NavLink className="nav-item nav-link" to="/login">
             Login
           </NavLink>
           <NavLink className="nav-item nav-link" to="/register">
             Register
-          </NavLink>
+          </NavLink> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

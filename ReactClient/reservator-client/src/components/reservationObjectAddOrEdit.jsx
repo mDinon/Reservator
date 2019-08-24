@@ -9,7 +9,8 @@ import {
 class ReservationObjectAddOrEdit extends Form {
   state = {
     data: { name: "", description: "", maximumReservationTime: 0 },
-    errors: {}
+    errors: {},
+    title: "Add item"
   };
 
   schema = {
@@ -40,7 +41,10 @@ class ReservationObjectAddOrEdit extends Form {
       const { data: reservationObject } = await getReservationObject(
         reservationObjectId
       );
-      this.setState({ data: this.mapToViewModel(reservationObject) });
+      this.setState({
+        title: "Edit item",
+        data: this.mapToViewModel(reservationObject)
+      });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         this.props.history.replace("/not-found");
@@ -63,7 +67,7 @@ class ReservationObjectAddOrEdit extends Form {
   render() {
     return (
       <div>
-        <h1 style={{ marginBottom: 50 }}>Add new or edit</h1>
+        <h1 style={{ marginBottom: 50 }}>{this.state.title}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
           {this.renderInput("description", "Description")}

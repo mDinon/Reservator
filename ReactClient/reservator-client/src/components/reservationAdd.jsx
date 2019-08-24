@@ -55,7 +55,7 @@ class ReservationAdd extends Form {
   render() {
     return (
       <div>
-        <h1 style={{ marginBottom: 50 }}>Add new</h1>
+        <h1 style={{ marginBottom: 50 }}>Add reservation</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderSelect(
             "reservationObjectId",

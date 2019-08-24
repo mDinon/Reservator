@@ -15,6 +15,7 @@ const DatePickerWrapper = ({ name, label, error, value, ...rest }) => {
           timeIntervals={15}
           dateFormat="dd.MM.yyyy. HH:mm"
           timeCaption="time"
+          todayButton={"Today"}
           name={name}
           {...rest}
           className="form-control"
