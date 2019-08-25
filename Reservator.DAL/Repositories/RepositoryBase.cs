@@ -62,7 +62,9 @@ namespace Reservator.DAL.Repositories
 			}
 
 			if (orderBy != null)
+			{
 				query = orderBy(query);
+			}
 
 			return await query.ToListAsync();
 		}
