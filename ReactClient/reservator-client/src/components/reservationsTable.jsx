@@ -6,7 +6,7 @@ class ReservationsTable extends Component {
   columns = [
     //{ path: "id", label: "Id" },
     { path: "reservationObjectName", label: "Item" },
-    { path: "reservationObjectDescription", label: "Item escription" },
+    { path: "reservationObjectDescription", label: "Item description" },
     {
       path: "dateFrom",
       label: "Date from",

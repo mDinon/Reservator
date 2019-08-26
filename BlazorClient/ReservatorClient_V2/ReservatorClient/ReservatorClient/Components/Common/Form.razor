@@ -1,0 +1,21 @@
+﻿@RenderButton("TEst Gumb")
+
+
+
+
+@code{
+	public RenderFragment RenderButton(string label)
+	{
+		RenderFragment fragment;
+
+		fragment = b =>
+		{
+			b.OpenElement(1, "button");
+			b.AddAttribute(1, "class", "btn btn-primary");
+			b.AddContent(2, label);
+			b.CloseElement();
+		};
+
+		return fragment;
+	}
+}
