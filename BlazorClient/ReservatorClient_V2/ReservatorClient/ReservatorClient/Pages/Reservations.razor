@@ -1,4 +1,8 @@
-﻿@page "/reservations"
+﻿@page "/"
+@page "/reservations"
+@using Models
+@using ReservatorClient.Components.Common
+@inject AppState AppState
 
 <h1>Reservations</h1>
 
@@ -6,11 +10,80 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+@if (isError)
+{
+	<div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (AppState?.Reservations != null && AppState.Reservations.Any())
+{
+	<Table Items="@AppState.Reservations">
+		<Header>
+			<th>Item</th>
+			<th>Item description</th>
+			<th>Date from</th>
+			<th>Date to</th>
+			<th></th>
+		</Header>
+		<Row>
+			<td>@context.ReservationObjectName</td>
+			<td>@context.ReservationObjectDescription</td>
+			<td>@context.DateFrom.ToString()</td>
+			<td>@context.DateTo.ToString()</td>
+			<td>
+				<button class="btn btn-sm btn-danger" @onclick="@(() => DeleteResevation(context.ID.GetValueOrDefault()))">
+					<i className="fa fa-trash m-1" />
+					Delete
+				</button>
+			</td>
+		</Row>
+	</Table>
+}
+else
+{
+	<label>Nothing to be displayed here!</label>
+}
+
+
 @code {
 	int currentCount = 0;
+	bool isError = false;
+	string errorMessage = string.Empty;
 
 	void IncrementCount()
 	{
 		currentCount++;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		AppState.OnChange += StateHasChanged;
+
+		await AppState.GetReservations();
+
+		Console.WriteLine("oninit");
+	}
+
+	async void DeleteResevation(int id)
+	{
+		if (id > 0)
+		{
+			isError = false;
+			List<Reservation> originalReservations = AppState.Reservations;
+
+			AppState.Reservations = AppState.Reservations.Where(x => x.ID != id).ToList();
+
+			try
+			{
+				await AppState.DeleteReservation(id);
+			}
+			catch
+			{
+				isError = true;
+				errorMessage = "An unexpected error has occured!";
+				AppState.Reservations = originalReservations;
+				StateHasChanged();
+			}
+		}
 	}
 }

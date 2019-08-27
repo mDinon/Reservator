@@ -4,13 +4,13 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-app {
+/*app {
     position: relative;
     display: flex;
     flex-direction: column;
-}
+}*/
 
-.top-row {
+/*.top-row {
     height: 3.5rem;
     display: flex;
     align-items: center;
@@ -82,7 +82,7 @@ app {
 
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
-}
+}*/
 
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
@@ -132,4 +132,8 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+.navbar {
+    margin-bottom: 30px;
 }
