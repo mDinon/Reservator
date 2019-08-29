@@ -3,12 +3,11 @@
 @using Models
 @using ReservatorClient.Components.Common
 @inject AppState AppState
+@inject IUriHelper UriHelper
 
-<h1>Reservations</h1>
+<h1 style="margin-bottom:50px">My reservations</h1>
 
-<p>Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-sm btn-primary" style="margin-bottom:20px" @onclick="@(()=> UriHelper.NavigateTo("reservations/add"))"><i class="fa fa-plus m-1" />Add new</button>
 
 @if (isError)
 {
@@ -32,7 +31,7 @@
 			<td>@context.DateTo.ToString()</td>
 			<td>
 				<button class="btn btn-sm btn-danger" @onclick="@(() => DeleteResevation(context.ID.GetValueOrDefault()))">
-					<i className="fa fa-trash m-1" />
+					<i class="fa fa-trash m-1" />
 					Delete
 				</button>
 			</td>
@@ -46,22 +45,14 @@ else
 
 
 @code {
-	int currentCount = 0;
 	bool isError = false;
 	string errorMessage = string.Empty;
-
-	void IncrementCount()
-	{
-		currentCount++;
-	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		AppState.OnChange += StateHasChanged;
 
 		await AppState.GetReservations();
-
-		Console.WriteLine("oninit");
 	}
 
 	async void DeleteResevation(int id)

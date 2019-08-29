@@ -1,0 +1,84 @@
+﻿@page "/items/add"
+@page "/items/edit/{Id:int}"
+@using Models
+@using ReservatorClient.Components.Common
+@inject HttpClient Http
+@inject AppState AppState
+@inject IUriHelper UriHelper
+@inherits Form
+
+<h1 style="margin-bottom:50px">@headingText</h1>
+
+@if (isError)
+{
+	<div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (AppState.ReservationObject != null)
+{
+	<EditForm Model="@AppState.ReservationObject" OnValidSubmit="@SaveReservationObject">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div className="form-group">
+			<label for="name">Name</label>
+			<InputText class="form-control" style="max-width:500px" name="name" type="text" id="name" @bind-Value="AppState.ReservationObject.Name"></InputText>
+		</div>
+		<div className="form-group">
+			<label for="description">Description</label>
+			<InputText class="form-control" style="max-width:500px" name="description" type="text" id="description" @bind-Value="AppState.ReservationObject.Description"></InputText>
+		</div>
+		<div className="form-group">
+			<label for="maximumReservationTime">Maximum reservation duration (days)</label>
+			<InputNumber class="form-control" style="max-width:500px" name="maximumReservationTime" id="maximumReservationTime" @bind-Value="AppState.ReservationObject.MaximumReservationTime"></InputNumber>
+		</div>
+		<br />
+		@RenderButton("Save")
+	</EditForm>
+}
+
+@code {
+	bool isError = false;
+	string errorMessage = string.Empty;
+	string headingText = "Add Item";
+
+	[Parameter]
+	public int? Id { get; set; }
+
+	protected override void OnInitialized()
+	{
+		AppState.OnChange += StateHasChanged;
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (Id.GetValueOrDefault() > 0)
+		{
+			headingText = "Edit item";
+			await AppState.GetReservationObject(Id.GetValueOrDefault());
+		}
+		else
+		{
+			AppState.ReservationObject = new ReservationObject();
+		}
+	}
+
+	async void SaveReservationObject()
+	{
+		if (AppState.ReservationObject != null)
+		{
+			isError = false;
+			errorMessage = string.Empty;
+			try
+			{
+				await AppState.SaveReservationObject(Id);
+				UriHelper.NavigateTo("items");
+			}
+			catch
+			{
+				isError = true;
+				errorMessage = "An unexpected error has occured!";
+			}
+		}
+	}
+}

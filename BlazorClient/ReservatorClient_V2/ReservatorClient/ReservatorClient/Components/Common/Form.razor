@@ -1,7 +1,4 @@
-﻿@RenderButton("TEst Gumb")
-
-
-
+﻿@using Models
 
 @code{
 	public RenderFragment RenderButton(string label)
@@ -12,9 +9,49 @@
 		{
 			b.OpenElement(1, "button");
 			b.AddAttribute(1, "class", "btn btn-primary");
-			b.AddContent(2, label);
+			b.AddAttribute(1, "type", "submit");
+			//b.AddAttribute(1, "disabled", "disabled");
+			b.AddContent(1, label);
 			b.CloseElement();
 		};
+
+		return fragment;
+	}
+
+	//public RenderFragment RenderInput(string name, string label, string item, string type = "text")
+	//{
+	//	RenderFragment fragment;
+
+	//	fragment = b =>
+	//	{
+	//		b.OpenComponent<Input>(1);
+	//		b.AddAttribute(1, "Name", name);
+	//		b.AddAttribute(1, "Type", type);
+	//		b.AddAttribute(1, "Label", label);
+	//		b.AddAttribute(1, "Item", item);
+	//		b.CloseComponent();
+	//	};
+
+	//	return fragment;
+	//}
+
+	public RenderFragment RenderSelectOptions(List<ReservationObject> reservationObjects)
+	{
+		RenderFragment fragment = null;
+
+		if (reservationObjects != null)
+		{
+			fragment = o =>
+			{
+				foreach (ReservationObject reservationObject in reservationObjects)
+				{
+					o.OpenElement(1, "option");
+					o.AddAttribute(1, "value", reservationObject.ID.GetValueOrDefault());
+					o.AddContent(1, reservationObject.Name);
+					o.CloseElement();
+				}
+			};
+		}
 
 		return fragment;
 	}

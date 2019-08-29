@@ -1,23 +1,4 @@
-﻿@*@typeparam TItem
-	@using Models
-
-	<table class="table">
-		<TableHeader Columns=@Columns  />
-		<TableBody Columns=@Columns Data="@Data" />
-	</table>
-
-	@code{
-		[Parameter]
-		public List<Column> Columns { get; set; }
-		[Parameter]
-		public string sortColumn { get; set; }
-		[Parameter]
-		public string onSort { get; set; }
-		[Parameter]
-		public IReadOnlyList<TItem> Data { get; set; }
-	}*@
-
-@typeparam TItem
+﻿@typeparam TItem
 
 <table class="table">
 	<thead>

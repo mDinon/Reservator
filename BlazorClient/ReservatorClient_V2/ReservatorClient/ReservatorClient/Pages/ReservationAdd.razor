@@ -1,0 +1,79 @@
+﻿@page "/reservations/add"
+@using Models
+@using ReservatorClient.Components.Common
+@inject HttpClient Http
+@inject AppState AppState
+@inject IUriHelper UriHelper
+@inherits Form
+
+<h1 style="margin-bottom:50px">Add reservation</h1>
+
+@if (isError)
+{
+	<div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (AppState.Reservation != null)
+{
+	<EditForm Model="@AppState.Reservation" OnValidSubmit="@SaveReservation">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div className="form-group">
+			<label for="reservationObjectId">Item</label>
+
+			<InputSelect id="reservationObjectId" name="reservationObjectId" class="form-control" style="max-width:500px" @bind-Value="AppState.Reservation.ReservationObjectIDString">
+				<option value="">-- Select item --</option>
+				@RenderSelectOptions(AppState.ReservationObjects)
+			</InputSelect>
+		</div>
+		<div className="form-group">
+			<label for="dateFrom">Date from</label>
+			<InputDate class="form-control" style="max-width:500px" name="dateFrom" id="dateFrom" @bind-Value="AppState.Reservation.DateFrom"></InputDate>
+		</div>
+		<div className="form-group">
+			<label for="dateTo">Date to</label>
+			<InputDate class="form-control" style="max-width:500px" name="dateTo" id="dateTo" @bind-Value="AppState.Reservation.DateTo"></InputDate>
+		</div>
+		<br />
+		@RenderButton("Save")
+	</EditForm>
+}
+
+@code {
+	bool isError = false;
+	string errorMessage = string.Empty;
+
+	[Parameter]
+	public int? Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		AppState.OnChange += StateHasChanged;
+		await AppState.GetReservationObjects();
+	}
+
+	protected override void OnParametersSet()
+	{
+		AppState.Reservation = new Reservation();
+	}
+
+	async void SaveReservation()
+	{
+		if (AppState.Reservation != null)
+		{
+			isError = false;
+			errorMessage = string.Empty;
+			try
+			{
+				await AppState.SaveReservation(Id);
+				UriHelper.NavigateTo("reservations");
+			}
+			catch
+			{
+				isError = true;
+				errorMessage = "An unexpected error has occured!";
+			}
+		}
+	}
+}

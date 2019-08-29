@@ -1,10 +1,10 @@
 ﻿<div className="form-group">
 	<label for=@Name>@Label</label>
-	<input id=@Name
-		   name=@Name
-		   className="form-control"
-		   style="max-width:500px"
-		   @attributes="InputAttributes" />
+	<InputText id=@Name
+			   name=@Name
+			   class="form-control"
+			   style="max-width:500px"
+			   @attributes="InputAttributes" />
 	@if (!string.IsNullOrWhiteSpace(Error))
 	{
 		<div id="divError" className="alert alert-danger" visible="false">@Error</div>

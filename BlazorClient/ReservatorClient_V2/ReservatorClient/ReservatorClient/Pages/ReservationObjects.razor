@@ -1,55 +1,78 @@
 ﻿@page "/items"
+@using Models
+@using ReservatorClient.Components.Common
 @inject HttpClient Http
+@inject AppState AppState
+@inject IUriHelper UriHelper
 
-<h1>Items</h1>
+<h1 style="margin-bottom:50px">Items</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<button class="btn btn-sm btn-primary" style="margin-bottom:20px" @onclick="@(()=> UriHelper.NavigateTo("items/add"))"><i class="fa fa-plus m-1" />Add new</button>
 
-@if (forecasts == null)
+@if (isError)
 {
-	<p><em>Loading...</em></p>
+	<div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (AppState?.ReservationObjects != null && AppState.ReservationObjects.Any())
+{
+	<Table Items="@AppState.ReservationObjects">
+		<Header>
+			<th>Item</th>
+			<th>Description</th>
+			<th>Maximum reservaton time (days)</th>
+			<th></th>
+		</Header>
+		<Row>
+			<td><a href=@("/items/edit/" + context.ID)>@context.Name</a></td>
+			<td>@context.Description</td>
+			<td>@context.MaximumReservationTime.ToString()</td>
+			<td>
+				<button class="btn btn-sm btn-danger" @onclick="@(() => DeleteResevationObject(context.ID.GetValueOrDefault()))">
+					<i class="fa fa-trash m-1" />
+					Delete
+				</button>
+			</td>
+		</Row>
+	</Table>
 }
 else
 {
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Date</th>
-				<th>Temp. (C)</th>
-				<th>Temp. (F)</th>
-				<th>Summary</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var forecast in forecasts)
-			{
-				<tr>
-					<td>@forecast.Date.ToShortDateString()</td>
-					<td>@forecast.TemperatureC</td>
-					<td>@forecast.TemperatureF</td>
-					<td>@forecast.Summary</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+	<label>Nothing to be displayed here!</label>
 }
 
+
 @code {
-	WeatherForecast[] forecasts;
+	bool isError = false;
+	string errorMessage = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
-		forecasts = await Http.GetJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+		AppState.OnChange += StateHasChanged;
+
+		await AppState.GetReservationObjects();
 	}
 
-	public class WeatherForecast
+	async void DeleteResevationObject(int? id)
 	{
-		public DateTime Date { get; set; }
+		if (id.GetValueOrDefault() > 0)
+		{
+			isError = false;
+			List<ReservationObject> originalReservationObjects = AppState.ReservationObjects;
 
-		public int TemperatureC { get; set; }
+			AppState.ReservationObjects = AppState.ReservationObjects.Where(x => x.ID != id).ToList();
 
-		public string Summary { get; set; }
-
-		public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+			try
+			{
+				await AppState.DeleteReservationObject(id.GetValueOrDefault());
+			}
+			catch
+			{
+				isError = true;
+				errorMessage = "An unexpected error has occured!";
+				AppState.ReservationObjects = originalReservationObjects;
+				StateHasChanged();
+			}
+		}
 	}
 }
