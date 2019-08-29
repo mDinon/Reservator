@@ -14,8 +14,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview8.19405.7" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Templates\" />
-  </ItemGroup>
-
 </Project>
