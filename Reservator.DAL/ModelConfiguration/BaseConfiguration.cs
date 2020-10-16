@@ -4,9 +4,9 @@ using Reservator.Model;
 
 namespace Reservator.DAL.ModelConfiguration
 {
-	public class BaseConfiguration<TEntiy> : IEntityTypeConfiguration<TEntiy> where TEntiy : EntityBase
+	public class BaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : EntityBase
 	{
-		public virtual void Configure(EntityTypeBuilder<TEntiy> builder)
+		public virtual void Configure(EntityTypeBuilder<TEntity> builder)
 		{
 			builder.HasQueryFilter(x => x.Active == true);
 			builder.Property(x => x.Active).HasDefaultValueSql("1").ValueGeneratedOnAdd();
